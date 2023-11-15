@@ -113,7 +113,62 @@ Performance counter stats for './optimized':
 ---
 
 
-perf record ./main  
-perf report
-
+perf record ./main perf report
+---
+        Overhead  Command  Shared Object         Symbol
+        40,57%  main     main                  [.] gcd
+        29,01%  main     [kernel.kallsyms]     [k] finish_task_switch.isra.0
+        7,11%  main     libc.so.6             [.] __GI___libc_write
+        2,55%  main     [kernel.kallsyms]     [k] _raw_spin_unlock_irqrestore
+        2,25%  main     [kernel.kallsyms]     [k] syscall_enter_from_user_mode
+        2,18%  main     libc.so.6             [.] _IO_fwrite
+        1,50%  main     [kernel.kallsyms]     [k] process_output_block
+        0,96%  main     [vboxguest]           [k] vbg_req_perform
+        0,60%  main     [kernel.kallsyms]     [k] n_tty_write
+        0,58%  main     libc.so.6             [.] _IO_file_xsputn@@GLIBC_2.2.5
+        0,56%  main     [kernel.kallsyms]     [k] file_tty_write.constprop.0
+        0,56%  main     libstdc++.so.6.0.30   [.] std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::_M_insert_int<long>
+        0,51%  main     [kernel.kallsyms]     [k] pty_write
+        0,51%  main     libc.so.6             [.] _IO_fflush
+        0,49%  main     [kernel.kallsyms]     [k] __check_heap_object
+        0,49%  main     [kernel.kallsyms]     [k] pty_write_room
+        0,45%  main     [kernel.kallsyms]     [k] queue_work_on
+        0,45%  main     libstdc++.so.6.0.30   [.] std::ostream::put
+        0,43%  main     [kernel.kallsyms]     [k] vfs_write
+        0,39%  main     [kernel.kallsyms]     [k] apparmor_file_permission
+        0,36%  main     libstdc++.so.6.0.30   [.] std::ostream::sentry::sentry
+        0,34%  main     [kernel.kallsyms]     [k] __fget_light
+        0,32%  main     libstdc++.so.6.0.30   [.] std::ostream::_M_insert<long>
+        0,30%  main     [kernel.kallsyms]     [k] do_tty_write
+        0,28%  main     libstdc++.so.6.0.30   [.] std::__ostream_insert<char, std::char_traits<char> >
+---
+perf record ./optimized perf report
+---
+        Samples: 2K of event 'cpu-clock:pppH', Event count (approx.): 723500000
+        Overhead  Command    Shared Object         Symbol
+        38,70%  optimized  [kernel.kallsyms]     [k] finish_task_switch.isra.0
+        12,79%  optimized  libc.so.6             [.] __GI___libc_write
+        4,70%  optimized  libc.so.6             [.] _IO_fwrite
+        4,56%  optimized  [kernel.kallsyms]     [k] _raw_spin_unlock_irqrestore
+        4,01%  optimized  [kernel.kallsyms]     [k] syscall_enter_from_user_mode
+        3,32%  optimized  [kernel.kallsyms]     [k] process_output_block
+        3,21%  optimized  optimized             [.] gcd
+        1,52%  optimized  [kernel.kallsyms]     [k] pty_write
+        1,35%  optimized  [kernel.kallsyms]     [k] n_tty_write
+        1,35%  optimized  libc.so.6             [.] _IO_file_xsputn@@GLIBC_2.2.5
+        1,07%  optimized  [kernel.kallsyms]     [k] __fget_light
+        1,07%  optimized  [kernel.kallsyms]     [k] apparmor_file_permission
+        1,07%  optimized  [kernel.kallsyms]     [k] file_tty_write.constprop.0
+        1,00%  optimized  [kernel.kallsyms]     [k] queue_work_on
+        1,00%  optimized  libstdc++.so.6.0.30   [.] std::ostream::sentry::sentry
+        0,93%  optimized  [kernel.kallsyms]     [k] pty_write_room
+        0,90%  optimized  libstdc++.so.6.0.30   [.] std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::_M_insert_int<long>
+        0,86%  optimized  [kernel.kallsyms]     [k] vfs_write
+        0,76%  optimized  [kernel.kallsyms]     [k] __check_heap_object
+        0,73%  optimized  [vboxguest]           [k] vbg_req_perform
+        0,73%  optimized  libstdc++.so.6.0.30   [.] std::ostream::_M_insert<long>
+        0,55%  optimized  libstdc++.so.6.0.30   [.] std::ostream::put
+        0,48%  optimized  [kernel.kallsyms]     [k] __virt_addr_valid
+        0,48%  optimized  libc.so.6             [.] _IO_fflush
+        0,48%  optimized  libstdc++.so.6.0.30   [.] std::__ostream_insert<char, std::char_traits<char> >
 ---
