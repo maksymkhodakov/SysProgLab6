@@ -1,7 +1,7 @@
 # Maksym Khodakov TTP-32
 ### System programming Laboratory work #6
 
-###  1) Commands to get a flame graph
+##  1) Commands to get a flame graph
 **git clone https://github.com/brendangregg/FlameGraph**  
 ---
 **perf record -F 50 --call-graph dwarf ./main**  
@@ -15,9 +15,8 @@
 **/home/jovakinn/CLionProjects/flame/FlameGraph/flamegraph.pl > outOptimized.svg**
 ---
 
-### 2) Commands for statistics
+## 2) Commands for statistics
 /usr/bin/time --verbose ./main
-
 ---
 
         Command being timed: "./main"
@@ -45,7 +44,6 @@
         Exit status: 0
 ---
 /usr/bin/time --verbose ./optimized
-
 ---
         Command being timed: "./optimized"
         User time (seconds): 0.58
@@ -95,7 +93,6 @@ Performance counter stats for './main':
        0,604571000 seconds sys
 
 ---
-
 perf stat -d ./main
 ---
 Performance counter stats for './optimized':
@@ -118,8 +115,6 @@ Performance counter stats for './optimized':
        0,592626000 seconds user
        0,581785000 seconds sys
 ---
-
-
 perf record ./main perf report
 ---
         Overhead  Command  Shared Object         Symbol
@@ -179,6 +174,7 @@ perf record ./optimized perf report
         0,48%  optimized  libc.so.6             [.] _IO_fflush
         0,48%  optimized  libstdc++.so.6.0.30   [.] std::__ostream_insert<char, std::char_traits<char> >
 ---
+## 3) Commands for temperature/power analysis
 1. **git clone https://github.com/RRZE-HPC/likwid.git**  
 2. **make**  
 3. **sudo make install**  
@@ -269,7 +265,7 @@ likwid-powermeter  ./optimized
         Energy consumed: 4.9634 Joules
         Power consumed: 1.5206 Watts
 ---
-## Assembly comparison part
+## 4) Assembly comparison part
 **main.asm** and **optimized.asm** are the assembly files compiled by MinGW gcc 13.1.0.  
 They represent main gcd function and optimized gcd function.
 
@@ -293,7 +289,7 @@ SIMD: У цьому варіанті не використовуються SIMD 
 Інструкції: Подібно до неоптимізованого варіанту, використовуються стандартні асемблерні інструкції для цілочисельних операцій.  
 SIMD: Як і в неоптимізованому варіанті, SIMD інструкції не використовуються. Код складається з послідовних інструкцій, що опрацьовують одне число за раз.  
 ---
-## Flame Graph comparison part
+## 5) Flame Graph comparison part
 **outMain.svg** - FlameGraph для не оптимізованого рішення  
 **outOptimized.svg** - FlameGraph для оптимізованого рішення
 
@@ -318,5 +314,5 @@ SIMD: Як і в неоптимізованому варіанті, SIMD інс�
 Аналізуючи обидва flame graph, можна зробити висновки про продуктивність і ефективність обох версій програми. Неоптимізована версія, імовірно, виконує більше обчислень або має менш ефективну структуру викликів, що призводить до довшого часу виконання. Навпаки, оптимізована версія показує ознаки кращої ефективності, з меншою кількістю і глибиною викликів функцій, що свідчить про більш оптимальне використання ресурсів.
 
 ---
-## Висновок
+## 6) Висновок
 Цей проект став глибоким дослідження системного аналізу та оптимізації. Я ретельно дослідив різні аспекти системної архітектури, зосереджуючись на детальному аналізі продуктивності та ефективності. Від поглибленого вивчення коду до використання інструментів профілювання, мета була забезпечити глибоке розуміння того, як можна покращити систему, щоб вона працювала оптимально та які наслідки оптимальності.
