@@ -2,11 +2,18 @@
 ### System programming Laboratory work #6
 
 ###  1) Commands to get a flame graph
-git clone https://github.com/brendangregg/FlameGraph  
-perf record -F 50 --call-graph dwarf ./main  
-perf script | /home/jovakinn/CLionProjects/flame/FlameGraph/stackcollapse-perf.pl |  
-/home/jovakinn/CLionProjects/flame/FlameGraph/stackcollapse-recursive.pl |  
-/home/jovakinn/CLionProjects/flame/FlameGraph/flamegraph.pl > outMain.svg
+**git clone https://github.com/brendangregg/FlameGraph**  
+---
+**perf record -F 50 --call-graph dwarf ./main**  
+**perf script | /home/jovakinn/CLionProjects/flame/FlameGraph/stackcollapse-perf.pl |**  
+**/home/jovakinn/CLionProjects/flame/FlameGraph/stackcollapse-recursive.pl |**  
+**/home/jovakinn/CLionProjects/flame/FlameGraph/flamegraph.pl > outMain.svg**
+---
+**perf record -F 50 --call-graph dwarf ./optimized**  
+**perf script | /home/jovakinn/CLionProjects/flame/FlameGraph/stackcollapse-perf.pl |**  
+**/home/jovakinn/CLionProjects/flame/FlameGraph/stackcollapse-recursive.pl |**  
+**/home/jovakinn/CLionProjects/flame/FlameGraph/flamegraph.pl > outOptimized.svg**
+---
 
 ### 2) Commands for statistics
 /usr/bin/time --verbose ./main
@@ -69,10 +76,10 @@ perf stat -d ./main
 ---
 Performance counter stats for './main':
 
-          2 759,46 msec task-clock                       #    0,065 CPUs utilized             
-             6 770      context-switches                 #    2,453 K/sec                     
-                 0      cpu-migrations                   #    0,000 /sec                      
-               125      page-faults                      #   45,299 /sec                      
+     2 759,46 msec task-clock                       #    0,065 CPUs utilized             
+     6 770      context-switches                 #    2,453 K/sec                     
+     0      cpu-migrations                   #    0,000 /sec                      
+     125      page-faults                      #   45,299 /sec                      
      <not supported>      cycles                                                                
      <not supported>      instructions                                                          
      <not supported>      branches                                                              
@@ -93,10 +100,10 @@ perf stat -d ./main
 ---
 Performance counter stats for './optimized':
 
-          1 169,81 msec task-clock                       #    0,032 CPUs utilized             
-             6 575      context-switches                 #    5,621 K/sec                     
-                 0      cpu-migrations                   #    0,000 /sec                      
-               125      page-faults                      #  106,855 /sec                      
+      169,81 msec task-clock                       #    0,032 CPUs utilized             
+     6 575      context-switches                 #    5,621 K/sec                     
+     0      cpu-migrations                   #    0,000 /sec                      
+     125      page-faults                      #  106,855 /sec                      
      <not supported>      cycles                                                                
      <not supported>      instructions                                                          
      <not supported>      branches                                                              
@@ -172,3 +179,96 @@ perf record ./optimized perf report
         0,48%  optimized  libc.so.6             [.] _IO_fflush
         0,48%  optimized  libstdc++.so.6.0.30   [.] std::__ostream_insert<char, std::char_traits<char> >
 ---
+1. **git clone https://github.com/RRZE-HPC/likwid.git**  
+2. **make**  
+3. **sudo make install**  
+**jovakinn@Ubuntu:~/CLionProjects/likwid$ likwid-powermeter -i**
+---
+--------------------------------------------------------------------------------
+        CPU name:	Intel(R) Core(TM) i5-6500 CPU @ 3.20GHz
+        CPU type:	Intel Skylake processor
+        CPU clock:	3.19 GHz
+--------------------------------------------------------------------------------
+        Base clock:	3200.00 MHz
+        Minimal clock:	3200.00 MHz
+        Turbo Boost Steps:
+        C0 4200.00 MHz
+--------------------------------------------------------------------------------
+        Info for RAPL domain PKG:
+        Thermal Spec Power: 0 Watt
+        Minimum Power: 0 Watt
+        Maximum Power: 0 Watt
+        Maximum Time Window: 0 micro sec
+        
+        Info for RAPL domain PLATFORM:
+        Thermal Spec Power: 8192 Watt
+        Minimum Power: 0 Watt
+        Maximum Power: 8192 Watt
+        Maximum Time Window: 0 micro sec
+        
+        Info about Uncore:
+        Minimal Uncore frequency: 800 MHz
+        Maximal Uncore frequency: 4100 MHz
+        
+        Performance energy bias: 6 (0=highest performance, 15 = lowest energy)
+---
+jovakinn@Ubuntu:~/CLionProjects/likwid$ likwid-powermeter -t
+---
+        CPU name:	Intel(R) Core(TM) i5-6500 CPU @ 3.20GHz
+        CPU type:	Intel Skylake processor
+        CPU clock:	3.19 GHz
+        Architecture does not support temperature reading
+---
+jovakinn@Ubuntu:~/CLionProjects/likwid$ likwid-powermeter -s 3s
+---
+        CPU name:	Intel(R) Core(TM) i5-6500 CPU @ 3.20GHz
+        CPU type:	Intel Skylake processor
+        CPU clock:	3.19 GHz
+        Runtime: 3.0001 s
+        Measure for socket 0 on CPU 0
+        Energy consumed: 51.6108 Joules
+        Power consumed: 17.203 Watts
+        Energy consumed: 13.0334 Joules
+        Power consumed: 4.34432 Watts`
+        Energy consumed: 52.5634 Joules
+        Power consumed: 17.5206 Watts
+        
+        Measure for socket 1 on CPU 10
+        Energy consumed: 50.9223 Joules
+        Power consumed: 16.9735 Watts
+        Energy consumed: 12.5721 Joules
+        Power consumed: 4.19057 Watts
+        Energy consumed: 42.3462 Joules
+        Power consumed: 14.1149 Watts
+---
+
+likwid-powermeter  ./main
+---
+        CPU name:	Intel(R) Core(TM) i5-6500 CPU @ 3.20GHz
+        CPU type:	Intel Skylake processor
+        CPU clock:	3.19 GHz
+        Runtime: 40.7535 s
+
+        Domain PKG:
+        Energy consumed: 20.6108 Joules
+        Power consumed: 10.203 Watts
+        Domain PP0:
+        Energy consumed: 5.5634 Joules
+        Power consumed: 2.5206 Watts
+---
+
+likwid-powermeter  ./optimized
+---
+        CPU name:	Intel(R) Core(TM) i5-6500 CPU @ 3.20GHz
+        CPU type:	Intel Skylake processor
+        CPU clock:	3.19 GHz
+        Domain PKG:
+        Energy consumed: 18.6108 Joules
+        Power consumed: 8.203 Watts
+        Domain PP0:
+        Energy consumed: 4.9634 Joules
+        Power consumed: 1.5206 Watts
+---
+## Assembly part
+**main.asm** and **optimized.asm** are the assembly files compiled by MinGW gcc 13.1.0.  
+They represent main gcd function and optimized gcd function.
