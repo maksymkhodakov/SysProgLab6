@@ -1,5 +1,9 @@
-# Maksym Khodakov TTP-32
-### System programming Laboratory work #6
+### Лабораторна робота №6  
+### з предмету "Системне програмування"
+### виконав студент 3 курсу 
+### групи ТТП-32 
+### Факультету комп`ютерних наук та кібернетики  
+### Ходаков Максим Олегович
 
 ##  1) Commands to get a flame graph
 **git clone https://github.com/brendangregg/FlameGraph**  
